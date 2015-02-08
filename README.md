@@ -7,7 +7,7 @@ Feel free to ask or comment *constructively*
 Download: `git clone https://github.com/bricolo/sievee`  
 Then type `cd sievee`  
 Then `make`  
-This might build the `sieve` binary.
+This might build the `sievee` binary.
 
 ##License
 This progam is under the GnuGPL license
