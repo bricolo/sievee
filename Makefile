@@ -25,6 +25,9 @@
 #Makefile of sievee
 sievee: sieve_of_eratosthenes.o main.o
 	        gcc -o sievee sieve_of_eratosthenes.o main.o -lm
+
+all: sievee sievee-w64.exe sievee-w32.exe
+
 main.o: main.c sieve_of_eratosthenes.h
 	        gcc -c -O3 main.c 
 sieve_of_eratosthenes.o: sieve_of_eratosthenes.c sieve_of_eratosthenes.h
@@ -36,5 +39,24 @@ main.do: main.c sieve_of_eratosthenes.h
 sieve_of_eratosthenes.do: sieve_of_eratosthenes.c sieve_of_eratosthenes.h
 	                gcc -o main.do -c -g -O3 sieve_of_eratosthenes.c
 
+#cross compile for windows 32
+sievee-w32.exe: sieve_of_eratosthenes.w32.o main.w32.o
+	        i586-mingw32msvc-gcc -o sievee-w32.exe sieve_of_eratosthenes.w32.o main.w32.o -lm
+main.w32.o: main.c sieve_of_eratosthenes.h
+	        i586-mingw32msvc-gcc -o main.w32.o -c -O3 main.c 
+sieve_of_eratosthenes.w32.o: sieve_of_eratosthenes.c sieve_of_eratosthenes.h
+	        i586-mingw32msvc-gcc -o sieve_of_eratosthenes.w32.o -c -O3 sieve_of_eratosthenes.c
+
+#cross compile for w64
+sievee-w64.exe: sieve_of_eratosthenes.w64.o main.w64.o
+	        x86_64-w64-mingw32-gcc -o sievee-w64.exe sieve_of_eratosthenes.w64.o main.w64.o -lm
+main.w64.o: main.c sieve_of_eratosthenes.h
+	        x86_64-w64-mingw32-gcc -o main.w64.o -c -O3 main.c 
+sieve_of_eratosthenes.w64.o: sieve_of_eratosthenes.c sieve_of_eratosthenes.h
+	        x86_64-w64-mingw32-gcc -o sieve_of_eratosthenes.w64.o -c -O3 sieve_of_eratosthenes.c
+
+.PHONY: clean
+
 clean:
-	rm -f sievee sievee.db *.o *.do
+	rm -f sievee sievee.db *.o *.do sievee-w*
+
