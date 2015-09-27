@@ -70,11 +70,14 @@ int * sieve_of_eratosthenes(int size)
 			}
 		}
 	}
-	if ( NULL == (send_array = (int *)malloc(size * sizeof(int))) ) {
+    //add 1 to size [0] get errors or length of the table
+    size = size+1;
+	if ( NULL == (send_array = (int *)malloc((size) * sizeof(int))) ) {
 		printf("malloc failed\n");
 		return((int *)-1);
 	}
-	i2 = 0;
+    send_array[0] = size;
+	i2 = 1;
 	for(i1=0; i1<=length; ++i1){
 		if(array_condition[i1] == 1){
 			if(i2<size){
@@ -85,9 +88,16 @@ int * sieve_of_eratosthenes(int size)
 	}
 	free(array_condition);
         
-      for(i=0; i<size; i++){
-    	printf("%d\n",send_array[i]);
-      }
 //      free(send_array);
     return(send_array);    
+}
+
+int print_array(int * myarray)
+{
+    int i;
+    int size_array = myarray[0];
+    for(i=1; i<size_array; i++){
+    printf("%d\n",myarray[i]);
+    }
+    return(0);
 }
