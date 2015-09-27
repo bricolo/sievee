@@ -1,0 +1,7 @@
+#ignore temp files
+.*~
+*.o
+*.O
+*.obj
+#binary
+sievee

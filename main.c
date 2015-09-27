@@ -37,8 +37,8 @@ int main( int argc, char **argv)
 {
     if((argc == 2) && (atoi(argv[1]) > 2)){
 	int number = atoi(argv[1]);
-    	int error= 0;
-	error = sieve_of_eratosthenes(number);
+    	int * primes= 0;
+	primes = sieve_of_eratosthenes(number);
 	//can handle error
     }
     else{
