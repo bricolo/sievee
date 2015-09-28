@@ -31,7 +31,7 @@
 //define const
 #define PROGRAM_NAME "sievee"
 
-#define HELP "Use: sievee [number]\nwith number>2\n" 
+#define HELP "Use: sievee [number]\nwith number > 2\n" 
 
 int main( int argc, char **argv)
 {
@@ -43,7 +43,18 @@ int main( int argc, char **argv)
     print_array(primes);
     }
     else{
-	printf(HELP);
+        if(argc == 2){
+            printf("interactive mode\nn=");
+            int number;
+            int res = scanf("%d", &number);
+            int * primes = NULL;
+            primes = sieve_of_eratosthenes(number);
+            primestofile(primes);
+            print_array(primes);
+        }
+        else{
+            printf(HELP);
+        }
     }
     return(0);    
 }

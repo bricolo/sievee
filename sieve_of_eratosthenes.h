@@ -31,4 +31,5 @@ extern int * sieve_of_eratosthenes(int size);
 //return[0]=-2 = bad number given
 
 extern int print_array(int * myarray);
+extern int primestofile(int * myarray);
 #endif

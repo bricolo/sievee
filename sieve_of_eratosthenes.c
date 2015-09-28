@@ -101,3 +101,15 @@ int print_array(int * myarray)
     }
     return(0);
 }
+
+int primestofile(int * myarray)
+{
+    int i;
+    int size_array = myarray[0];
+    FILE * fp;
+    fp = fopen("primes1.txt", "a");
+    for( i=1; i<size_array; i++){
+        fprintf(fp, "%d\n", myarray[i]);
+    }
+    return(0);
+}
