@@ -59,4 +59,3 @@ sieve_of_eratosthenes.w64.o: sieve_of_eratosthenes.c sieve_of_eratosthenes.h
 
 clean:
 	rm -f sievee sievee.db *.o *.do sievee-w*
-

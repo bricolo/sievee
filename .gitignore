@@ -5,3 +5,5 @@
 *.obj
 #binary
 sievee
+#tempdir
+tmp/*

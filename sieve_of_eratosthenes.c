@@ -26,6 +26,20 @@
 #include <math.h>
 
 #include "sieve_of_eratosthenes.h"
+
+//define bit manipulation macro (thanks to
+//http://mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html
+//)
+/*
+#define SetBit(A,k) (A[(k/32)] |= (1<<(k%32)))
+#define ClearBit(A,k) (A[(k/32)] &= ~(1 << (k%32)))
+#define TestBit(A,k) (A[(k/32)] & (1 << (k%32)))
+*/
+//char array
+#define SetBit(A,k) (A[(k/8)] |= (1<<(k%8)))
+#define ClearBit(A,k) (A[(k/8)] &= ~(1 << (k%8)))
+#define TestBit(A,k) (A[(k/8)] & (1 << (k%8)))
+
 //sieve of erastosthenes function 
 int * sieve_of_eratosthenes(int size)
 {
@@ -35,35 +49,37 @@ int * sieve_of_eratosthenes(int size)
         return((int *)-2);
 	}
 
-    int i;
     //array filled with 0 or 1
-	char* array_condition;
+	unsigned char* array_condition;
     //array to return
 	int* send_array;
 	int i1, i2, result;
 	double length1 = (double)length;
 	int sqrt_length = (int)(sqrt(length1)+1);
-	if ( NULL == (array_condition = (char *)malloc((length+1) * sizeof(char))) ) {
+    int to_alloc = (length+1)/8;
+    to_alloc = to_alloc + (8-(to_alloc%8)) + 2;
+	if ( NULL == (array_condition = (unsigned char *)malloc(to_alloc * sizeof(unsigned char))) ) {
 		printf("malloc failed2\n");
 		return((int *)-1);
 	}
 
     //init whole array to 1
 	for(i1=0; i1<=length; i1++){
-		array_condition[i1] = 1;
+		//array_condition(char *)|=(1<<i1);
+        SetBit(array_condition, i1);
 	}
-    //eliminate 1 from the list
-	array_condition[0] = 0;
+    //while i<sqrt(n)
 	for(i1=2; i1<sqrt_length; i1++){
         //if i1 is a prime number
-		if(array_condition[i1] == 1){
+		if(TestBit(array_condition,i1)){
             //for each i from 2 to length
 			for(i2=2; i2<length; ++i2){
                 //calc i1*i2 and pass th cel of the array to 0 (not a prime)
 				result = (i1)*i2;
 				if(result<=length){
-					if(array_condition[result] == 1){
-				    	array_condition[result] = 0;
+					if(TestBit(array_condition, result)){
+				    	//array_condition&=~(1<<result);
+                        ClearBit(array_condition,result);
 					size=size-1;
 					}
 				}
@@ -71,15 +87,14 @@ int * sieve_of_eratosthenes(int size)
 		}
 	}
     //add 1 to size [0] get errors or length of the table
-    size = size+1;
 	if ( NULL == (send_array = (int *)malloc((size) * sizeof(int))) ) {
 		printf("malloc failed\n");
 		return((int *)-1);
 	}
     send_array[0] = size;
 	i2 = 1;
-	for(i1=0; i1<=length; ++i1){
-		if(array_condition[i1] == 1){
+	for(i1=2; i1<=length; ++i1){
+		if(TestBit(array_condition,i1)){
 			if(i2<size){
 		    	send_array[i2] = i1;
 			}
