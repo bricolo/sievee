@@ -41,26 +41,26 @@
 #define TestBit(A,k) (A[(k/8)] & (1 << (k%8)))
 
 //sieve of erastosthenes function 
-int * sieve_of_eratosthenes(int size)
+long long * sieve_of_eratosthenes(long long size)
 {
-      int length = size;
+      long long length = size;
 // stop if n<3 -> no need to calc
     if(size < 3){ 
-        return((int *)-2);
+        return((long long *)-2);
 	}
 
     //array filled with 0 or 1
 	unsigned char* array_condition;
     //array to return
-	int* send_array;
-	int i1, i2, result;
+	long long * send_array;
+	long long i1, i2, result;
 	double length1 = (double)length;
-	int sqrt_length = (int)(sqrt(length1)+1);
-    int to_alloc = (length+1)/8;
+	long long sqrt_length = (long long)(sqrt(length1)+1);
+    long long to_alloc = (length+1)/8;
     to_alloc = to_alloc + (8-(to_alloc%8)) + 2;
 	if ( NULL == (array_condition = (unsigned char *)malloc(to_alloc * sizeof(unsigned char))) ) {
 		printf("malloc failed2\n");
-		return((int *)-1);
+		return((long long *)-1);
 	}
 
     //init whole array to 1
@@ -87,9 +87,9 @@ int * sieve_of_eratosthenes(int size)
 		}
 	}
     //add 1 to size [0] get errors or length of the table
-	if ( NULL == (send_array = (int *)malloc((size) * sizeof(int))) ) {
+	if ( NULL == (send_array = (long long *)malloc((size) * sizeof(long long))) ) {
 		printf("malloc failed\n");
-		return((int *)-1);
+		return((long long *)-1);
 	}
     send_array[0] = size;
 	i2 = 1;
@@ -107,24 +107,24 @@ int * sieve_of_eratosthenes(int size)
     return(send_array);    
 }
 
-int print_array(int * myarray)
+int print_array(long long * myarray)
 {
-    int i;
-    int size_array = myarray[0];
+    long long i;
+    long long size_array = myarray[0];
     for(i=1; i<size_array; i++){
-    printf("%d\n",myarray[i]);
+    printf("%lld\n",myarray[i]);
     }
     return(0);
 }
 
-int primestofile(int * myarray)
+int primestofile(long long * myarray)
 {
     int i;
     int size_array = myarray[0];
     FILE * fp;
     fp = fopen("primes1.txt", "a");
     for( i=1; i<size_array; i++){
-        fprintf(fp, "%d\n", myarray[i]);
+        fprintf(fp, "%lld\n", myarray[i]);
     }
     return(0);
 }

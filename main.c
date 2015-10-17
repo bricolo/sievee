@@ -36,8 +36,8 @@
 int main( int argc, char **argv)
 {
     if((argc == 2) && (atoi(argv[1]) > 2)){
-	int number = atoi(argv[1]);
-    	int * primes= NULL;
+	long long number = (long long)atoi(argv[1]);
+    	long long * primes= NULL;
 	primes = sieve_of_eratosthenes(number);
 	//can handle error (negativ in [0])
     print_array(primes);
@@ -45,9 +45,9 @@ int main( int argc, char **argv)
     else{
         if(argc == 2){
             printf("interactive mode\nn=");
-            int number;
-            int res = scanf("%d", &number);
-            int * primes = NULL;
+            long long number;
+            int res = scanf("%lld", &number);
+            long long * primes = NULL;
             primes = sieve_of_eratosthenes(number);
             primestofile(primes);
             print_array(primes);

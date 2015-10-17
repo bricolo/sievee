@@ -25,11 +25,11 @@
 #ifndef SIEVE_OF_ERATOSTHENES_H
 #define SIEVE_OF_ERATOSTHENES_H
 
-extern int * sieve_of_eratosthenes(int size);
+extern long long * sieve_of_eratosthenes(long long size);
 //return[0]= length of the array = success
 //return[0]=-1 = memory allocation failled
 //return[0]=-2 = bad number given
 
-extern int print_array(int * myarray);
-extern int primestofile(int * myarray);
+extern int print_array(long long * myarray);
+extern int primestofile(long long * myarray);
 #endif
