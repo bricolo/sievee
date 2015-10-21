@@ -31,28 +31,29 @@
 //http://mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html
 //)
 /*
+//for int bit array
 #define SetBit(A,k) (A[(k/32)] |= (1<<(k%32)))
 #define ClearBit(A,k) (A[(k/32)] &= ~(1 << (k%32)))
 #define TestBit(A,k) (A[(k/32)] & (1 << (k%32)))
 */
-//char array
+//char bit array
 #define SetBit(A,k) (A[(k/8)] |= (1<<(k%8)))
 #define ClearBit(A,k) (A[(k/8)] &= ~(1 << (k%8)))
 #define TestBit(A,k) (A[(k/8)] & (1 << (k%8)))
 
 //sieve of erastosthenes function 
-long long * sieve_of_eratosthenes(long long size)
+unsigned char * sieve_of_eratosthenes(long long size)
 {
       long long length = size;
 // stop if n<3 -> no need to calc
     if(size < 3){ 
-        return((long long *)-2);
+        return((unsigned char *)-2);
 	}
 
     //array filled with 0 or 1
 	unsigned char* array_condition;
     //array to return
-	long long * send_array;
+//	long long * send_array;
 	long long i1, i2, result;
 	double length1 = (double)length;
 	long long sqrt_length = (long long)(sqrt(length1)+1);
@@ -60,7 +61,7 @@ long long * sieve_of_eratosthenes(long long size)
     to_alloc = to_alloc + (8-(to_alloc%8)) + 2;
 	if ( NULL == (array_condition = (unsigned char *)malloc(to_alloc * sizeof(unsigned char))) ) {
 		printf("malloc failed2\n");
-		return((long long *)-1);
+		return((unsigned char *)-1);
 	}
 
     //init whole array to 1
@@ -77,15 +78,17 @@ long long * sieve_of_eratosthenes(long long size)
                 //calc i1*i2 and pass th cel of the array to 0 (not a prime)
 				result = (i1)*i2;
 				if(result<=length){
-					if(TestBit(array_condition, result)){
+					//if(TestBit(array_condition, result)){
 				    	//array_condition&=~(1<<result);
                         ClearBit(array_condition,result);
-					size=size-1;
-					}
+					//size=size-1;
+					//}
 				}
 			}
 		}
 	}
+    return(array_condition);
+    /*
     //add 1 to size [0] get errors or length of the table
 	if ( NULL == (send_array = (long long *)malloc((size) * sizeof(long long))) ) {
 		printf("malloc failed\n");
@@ -105,9 +108,94 @@ long long * sieve_of_eratosthenes(long long size)
         
 //      free(send_array);
     return(send_array);    
+    */
 }
 
-int print_array(long long * myarray)
+
+long long number_of_prime(unsigned char * condition_array, long long size)
+{
+    long long nprimes = 0;
+    long long i1;
+	for(i1=2; i1<=size; ++i1)
+    {
+		if(TestBit(condition_array,i1))
+        {
+            nprimes++;
+        }
+	}
+
+    return(nprimes);    
+}
+
+int array_to_file(unsigned char * condition_array, long long size)
+{
+    long long i;
+    FILE* fp;
+    fp = fopen(FILENAMEARRAY, "w");
+    for(i=1; i<size; i++){
+		if(TestBit(condition_array,i))
+        {
+            fprintf(fp, "1");
+        }
+        else
+        {
+            fprintf(fp, "0");
+        }
+    }
+    return(0);
+}
+
+int primestofile(unsigned char * condition_array, long long size)
+{
+    long long i;
+    FILE* fp;
+    fp = fopen(FILENAME, "w");
+    for(i=1; i<size; i++){
+		if(TestBit(condition_array,i))
+        {
+            fprintf(fp, "%lld\n", i);
+        }
+    }
+    return(0);
+}
+
+int printprimes(unsigned char * condition_array, long long size)
+{
+    long long i;
+    for(i=1; i<size; i++){
+		if(TestBit(condition_array,i))
+        {
+            printf("%lld\n", i);
+        }
+    }
+    return(0);
+}
+
+long long * create_long_array(unsigned char * condition_array, long long size)
+{
+    long long i1, i2;
+    long long * send_array;
+    //add 1 for the array size in [0]
+    long long nprimes = 1+number_of_prime(condition_array, size);
+	if ( NULL == (send_array = (long long *)malloc((nprimes) * sizeof(long long))) ) {
+		printf("malloc failed\n");
+		return((long long *)-1);
+	}
+    send_array[0] = nprimes;
+	i2 = 1;
+	for(i1=2; i1<=size; ++i1){
+		if(TestBit(condition_array,i1)){
+			if(i2<size){
+		    	send_array[i2] = i1;
+			}
+			++i2;
+		}
+	}
+
+    return(send_array);    
+}
+
+int long_print_array(long long * myarray)
 {
     long long i;
     long long size_array = myarray[0];
@@ -117,14 +205,16 @@ int print_array(long long * myarray)
     return(0);
 }
 
-int primestofile(long long * myarray)
+
+int long_primestofile(long long * myarray)
 {
     int i;
     int size_array = myarray[0];
     FILE * fp;
-    fp = fopen("primes1.txt", "a");
+    fp = fopen(FILENAME, "a");
     for( i=1; i<size_array; i++){
         fprintf(fp, "%lld\n", myarray[i]);
     }
     return(0);
 }
+

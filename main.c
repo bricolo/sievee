@@ -37,20 +37,33 @@ int main( int argc, char **argv)
 {
     if((argc == 2) && (atoi(argv[1]) > 2)){
 	long long number = (long long)atoi(argv[1]);
-    	long long * primes= NULL;
-	primes = sieve_of_eratosthenes(number);
-	//can handle error (negativ in [0])
-    print_array(primes);
+    unsigned char * condition_array;
+	condition_array = sieve_of_eratosthenes(number);
+    primestofile(condition_array, number);
     }
     else{
         if(argc == 2){
             printf("interactive mode\nn=");
             long long number;
+            int choice;
             int res = scanf("%lld", &number);
-            long long * primes = NULL;
-            primes = sieve_of_eratosthenes(number);
-            primestofile(primes);
-            print_array(primes);
+            unsigned char * condition_array;
+            condition_array = sieve_of_eratosthenes(number);
+            printf("1 -> print primes to a file\n2 -> print array to file\n3 -> display primes\n ?=");
+            res = scanf("%d", &choice);
+            switch (choice) {
+                case 1:
+                    primestofile(condition_array, number);
+                    break;
+                case 2:
+                    array_to_file(condition_array, number);
+                    break;
+                case 3:
+                    printprimes(condition_array, number);
+                    break;
+                default:
+                    primestofile(condition_array, number);
+            }
         }
         else{
             printf(HELP);

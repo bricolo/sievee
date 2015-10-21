@@ -25,11 +25,37 @@
 #ifndef SIEVE_OF_ERATOSTHENES_H
 #define SIEVE_OF_ERATOSTHENES_H
 
-extern long long * sieve_of_eratosthenes(long long size);
-//return[0]= length of the array = success
-//return[0]=-1 = memory allocation failled
-//return[0]=-2 = bad number given
+#define FILENAME "prime.txt"
+#define FILENAMEARRAY "prime_array.txt"
+//each array of long use his [0] as a counter -> use it as for( ; <array[0];)
 
-extern int print_array(long long * myarray);
-extern int primestofile(long long * myarray);
+extern unsigned char * sieve_of_eratosthenes(long long size);
+//create a array of unsigned char, each bit turned 1 at a position flag this
+//position as prime
+
+extern long long number_of_prime(unsigned char * condition_array, long long size);
+//return the number of prime numbers found in condition_array
+
+extern int array_to_file(unsigned char * condition_array, long long size);
+//print the bit array in file
+
+extern int primestofile(unsigned char * condition_array, long long size);
+//print primes in a file
+
+extern int printprimes(unsigned char * condition_array, long long size);
+//display primes
+
+
+//DEPRECATED
+
+extern long long * create_long_array(unsigned char * condition_array, long long size);
+//create table of long that contain each number mark as prime in
+//condition_array
+//!!!!can lead to "segmentation fault" -> asking for to much ram
+
+extern int long_print_array(long long * myarray);
+//print the long long array 
+
+extern int long_primestofile(long long * myarray);
+//print in file an array of long
 #endif
